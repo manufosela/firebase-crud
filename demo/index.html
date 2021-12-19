@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es-ES">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>firebase-crud Demo</title>
+  </head>
+  <body>
+    <div id="demo"></div>
+
+    <script type="module">
+      import { html, render } from 'lit';
+      import '../firebase-crud.js';
+      import 'firebase-loginbutton/firebase-loginbutton.js';
+
+      render(
+        html`
+          <header>
+            <h1>Películas</h1>
+            <firebase-loginbutton
+              id="peliculasLogin"
+              api-key="AIzaSyCVpVjyqS9qNcTsTDuQ8qBL1i4VPy5CdpY"
+              domain="coleccion-peliculas"
+              messaging-sender-id="852819704247"
+              app-id="1:852819704247:web:9ac0a093401920ed"
+            ></firebase-loginbutton>
+            <firebase-crud reference-id="peliculasLogin"></firebase-crud>
+          </header>
+
+          <main id="main">
+            <form>
+              <button id="getdataAllBtn">Get All Data</button>
+              <button id="getFLdataBtn">Get First Level Data</button>
+              <button disabled>Insert Data</button>
+              <button disabled>Update Data</button>
+              <button disabled>Listen Data</button>
+              <button disabled>Get NewId Data</button>
+            </form>
+            <section>
+              <h1>Peliculas</h1>
+              <div id="peliculas"></div>
+            </section>
+          </main>
+        `,
+        document.querySelector('#demo')
+      );
+
+      function showData(data) {
+        document.getElementById('peliculas').innerHTML = JSON.stringify(data);
+      }
+
+      function showFLData(data) {
+        const keys = Object.keys(data);
+        document.getElementById('peliculas').innerHTML = '';
+        keys.forEach(key => {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.id = `link-${key}`;
+          a.href = `#${key}`;
+          a.innerText = key;
+          a.addEventListener('click', e => {
+            e.preventDefault();
+            document
+              .querySelector('firebase-crud')
+              .getData(`/${e.target.innerText}`, showData);
+          });
+          li.appendChild(a);
+          document.getElementById('peliculas').appendChild(li);
+        });
+      }
+
+      document
+        .getElementById('getdataAllBtn')
+        .addEventListener('click', event => {
+          event.stopPropagation();
+          event.preventDefault();
+          document.querySelector('firebase-crud').getData('/', showData);
+          return false;
+        });
+
+      document
+        .getElementById('getFLdataBtn')
+        .addEventListener('click', event => {
+          event.stopPropagation();
+          event.preventDefault();
+          document.querySelector('firebase-crud').getData('/', showFLData);
+          return false;
+        });
+    </script>
+  </body>
+</html>

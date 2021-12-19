@@ -1,0 +1,104 @@
+/**
+ * Copyright 2021 manufosela
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+header {
+  display: flex;
+  flex-direction: row;
+  background: #333;
+  color: #fff;
+  padding: 1em;
+  text-align: center;
+}
+header h1 {
+  width: 80vw;
+}
+main {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  height: 100vh;
+  margin-top: 1rem;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 400px;
+}
+form > * {
+  margin: 10px 0;
+}
+form > *:first-child {
+  margin-top: 0;
+}
+form > *:last-child {
+  margin-bottom: 0;
+}
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+input:focus {
+  outline: none;
+  border-color: #aaa;
+}
+button {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background: #333;
+  color: #fff;
+  cursor: pointer;
+}
+button:hover {
+  background: #444;
+}
+button:active {
+  background: #000;
+}
+button:disabled {
+  background: #ccc;
+  color: #666;
+  cursor: default;
+}
+section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 400px;
+}
+section > * {
+  margin: 10px 0;
+  max-width: 50vw;
+}
+section > *:first-child {
+  margin-top: 0;
+}
+section > *:last-child {
+  margin-bottom: 0;
+}
