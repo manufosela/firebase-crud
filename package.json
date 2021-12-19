@@ -1,11 +1,20 @@
 {
   "name": "@firebase-utils/firebase-crud",
   "description": "Webcomponent firebase-crud following open-wc recommendations",
-  "license": "MIT",
-  "author": "manufosela",
   "version": "1.0.0",
   "main": "index.js",
   "module": "firebase-crud.js",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/user/firebase-crud"
+  },
+  "author": "manufosela",
+  "license": "Apache 2.0",
+  "keywords": [
+    "webcomponent",
+    "lit-element"
+  ],
   "scripts": {
     "analyze": "cem analyze --litelement",
     "start": "web-dev-server",
