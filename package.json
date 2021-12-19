@@ -1,5 +1,5 @@
 {
-  "name": "firebase-crud",
+  "name": "@firebase-utils/firebase-crud",
   "description": "Webcomponent firebase-crud following open-wc recommendations",
   "license": "MIT",
   "author": "manufosela",
