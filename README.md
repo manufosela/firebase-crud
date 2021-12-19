@@ -15,7 +15,14 @@ npm i firebase-crud
   import 'firebase-crud/firebase-crud.js';
 </script>
 
-<firebase-crud></firebase-crud>
+<firebase-loginbutton
+  id="FirebaseLogginbutton-ID"
+  [FIREBASE
+  CONFIG
+  ATTRIBUTES]
+></firebase-loginbutton>
+<!-- This component works with firebase-loginbutton or setting firebaseapp property -->
+<firebase-crud reference-id="FirebaseLogginbutton-ID"></firebase-crud>
 ```
 
 ## Linting and formatting
@@ -59,7 +66,6 @@ To build a production version of Storybook, run
 ```bash
 npm run storybook:build
 ```
-
 
 ## Tooling configs
 
