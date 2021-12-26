@@ -1,5 +1,6 @@
 import { html, LitElement } from 'lit';
 import { getDatabase, ref, onValue, set, get, child, push, update, connectDatabaseEmulator } from "firebase/database";
+import { ref as sRef, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 export class FirebaseCrud extends LitElement {
   static get properties() {
@@ -21,9 +22,20 @@ export class FirebaseCrud extends LitElement {
     this.firebaseApp = null;
     this.db = null;
     this.userData = null;
+    this.storage = null;
 
     document.addEventListener('firebase-signin', this._firebaseLogin.bind(this));
     document.addEventListener('firebase-signout', this._firebaseLogout.bind(this));
+  }
+
+  update() {
+    if (this.firebaseApp === null) {
+      document.dispatchEvent(new CustomEvent('are-it-logged-into-firebase', {
+        detail: {
+          id: this.referenceId,
+        }
+      }));
+    }
   }
 
   _firebaseLogin(event) {  
@@ -35,7 +47,8 @@ export class FirebaseCrud extends LitElement {
       if (this.emulation) {
         connectDatabaseEmulator(this.db);
       }
-      this.consolelog('_firebaseLogin', this.firebaseApp, this.db, this.userData);
+      this.storage = event.detail.firebaseStorage;
+      this.consoleLog('_firebaseLogin', this.firebaseApp, this.db, this.userData, this.storage);
     }
   }
 
@@ -43,26 +56,23 @@ export class FirebaseCrud extends LitElement {
     this.firebaseApp = null;
     this.db = null;
     this.userData = null;
+    this.storage = null;
   }
 
-  consolelog(...args) {
+  consoleLog(...args) {
     if (this.showLog) {
       console.log(...args);
     }
   }
 
-  consoleerror(...args) {
+  consoleError(...args) {
     if (this.showLog) {
       console.error(...args);
     }
   }
 
-  database() {
-    
-  }
-
   listenData(path = '/', callbackExists, callbackNotExists = () => {}) {
-    this.consolelog('listenData', path);
+    this.consoleLog('listenData', path);
     if (callbackExists) {
       const refDb = ref(this.db, path);
       onValue(refDb, (snapshot) => {
@@ -78,28 +88,28 @@ export class FirebaseCrud extends LitElement {
   }
 
   deleteData(path = '/', callbackTrue = () =>{}) {
-    this.consolelog('deleteData', path);
+    this.consoleLog('deleteData', path);
     const dbRef = ref(this.db);
     return new Promise((resolve, reject) => {
       set(child(dbRef, path), null).then(() => {
         callbackTrue();
         resolve(`${path} borrado de la base de datos`);
       }).catch((error) => {
-        this.consoleerror('Error deleting data:', error);
+        this.consoleError('Error deleting data:', error);
         reject(error);
       });
     });
   }
 
   insertData(data = {default: 'default data'}, path = '/', callbackTrue = () =>{}) {
-    this.consolelog('insertData', data, path);
+    this.consoleLog('insertData', data, path);
     return new Promise((resolve, reject) => {
       set(ref(this.db, path), data).then(() => {
         callbackTrue();
         resolve(true);
       })
       .catch((error) => {
-        this.consoleerror(error);
+        this.consoleError(error);
         reject(error);
       });
     });
@@ -112,7 +122,7 @@ export class FirebaseCrud extends LitElement {
         resolve(`Actualización correcta en la base de datos`);
       })
       .catch((error) => {
-        this.consoleerror(error);
+        this.consoleError(error);
         reject(error);
       });
     });
@@ -129,7 +139,7 @@ export class FirebaseCrud extends LitElement {
           resolve(null);
         }
       }).catch((error) => {
-        this.consoleerror(error);
+        this.consoleError(error);
         reject(error);
       });
     });
@@ -140,6 +150,46 @@ export class FirebaseCrud extends LitElement {
     return newResultKey;
   }
 
+  /** SAVE FILES IN STORAGE */
+  uploadFSFile(blob, pathAndFileName) {
+    return new Promise((resolve, reject) => {
+      const storageRef = sRef(this.storage, pathAndFileName);
+      const uploadTask = uploadBytesResumable(storageRef, blob);
+      uploadTask.on('state_changed', (snapshot) => {
+        const process = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        this.consoleLog(`Upload is ${  process  }% done`);
+        document.dispatchEvent(new CustomEvent('firebase-upload-progress', {
+          detail: {
+            id: this.referenceId,
+            process,
+          },
+        }));
+      }, (error) => {
+        this.consoleError(error);
+        reject(error);
+      }, () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          this.consoleLog('File available at', downloadURL);
+          resolve(downloadURL);
+        });
+      });
+    });
+  }
+
+  /** DOWNLOAD FILES FROM STORAGE */
+  downloadFSFile(path) {
+    return new Promise((resolve, reject) => {
+      sRef(this.storage, path).getDownloadURL().then((url) => {
+        this.consoleLog('File available at', url);
+        resolve(url);
+      }).catch((error) => {
+        this.consoleError(error);
+        reject(error);
+      });
+    });
+  }
+
+  /** EMPTY RENDER */
   render() {
     return html``;
   }

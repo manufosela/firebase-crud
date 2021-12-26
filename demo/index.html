@@ -29,6 +29,14 @@
 
           <main id="main">
             <form>
+              <input type="file" name="prueba" aria-label="file" />
+              <img
+                id="imageLoaded"
+                alt="ImageLoaded"
+                style="border:1px solid black; width:200px; height:200px; display:none;"
+              />
+              <button id="submitFile">Subir fichero</button>
+
               <button id="getdataAllBtn">Get All Data</button>
               <button id="getFLdataBtn">Get First Level Data</button>
               <button disabled>Insert Data</button>
@@ -85,6 +93,31 @@
           event.stopPropagation();
           event.preventDefault();
           document.querySelector('firebase-crud').getData('/', showFLData);
+          return false;
+        });
+
+      document
+        .getElementById('submitFile')
+        .addEventListener('click', async event => {
+          event.stopPropagation();
+          event.preventDefault();
+          console.log(document.querySelector('input[type="file"]').files[0]);
+          const objFirebaseCrud = document.querySelector('firebase-crud');
+          document.addEventListener('firebase-upload-progress', e => {
+            console.log(e.detail);
+          });
+          const resp = await objFirebaseCrud.uploadFSFile(
+            document.querySelector('input[type="file"]').files[0],
+            `/peliculas/prueba/${
+              document.querySelector('input[type="file"]').files[0].name
+            }`
+          );
+          console.log(`Url file uploaded: ${resp}`);
+          document.getElementById('imageLoaded').src = resp;
+          document.getElementById('imageLoaded').style.display = 'block';
+          document.removeEventListener('firebase-upload-progress', e => {
+            console.log(e.detail);
+          });
           return false;
         });
     </script>
