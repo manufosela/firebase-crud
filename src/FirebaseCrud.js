@@ -17,6 +17,7 @@ export class FirebaseCrud extends LitElement {
 
   constructor() {
     super();
+    this.id = `firebase-crud${Math.floor(Math.random() * 1000000)}`;
     this.emulation = false;
     this.showLog = false;
     this.firebaseApp = null;
@@ -26,6 +27,17 @@ export class FirebaseCrud extends LitElement {
 
     document.addEventListener('firebase-signin', this._firebaseLogin.bind(this));
     document.addEventListener('firebase-signout', this._firebaseLogout.bind(this));
+  }
+
+  firstUpdated() {
+    const componentCreatedEvent = new CustomEvent('wc-ready', {
+      detail: {
+        id: this.id,
+        componentName: this.tagName,
+        component: this,
+      },
+    });
+    document.dispatchEvent(componentCreatedEvent);
   }
 
   update() {
