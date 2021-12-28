@@ -5,6 +5,7 @@ import { ref as sRef, uploadBytesResumable, getDownloadURL } from "firebase/stor
 export class FirebaseCrud extends LitElement {
   static get properties() {
     return {
+      id: { type: String },
       referenceId: { type: String, attribute: 'reference-id' },
       emulation: { type: Boolean, attribute: 'emulation', reflect: true },
       showLog: { type: Boolean, attribute: 'show-log', reflect: true,  },
