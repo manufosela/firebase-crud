@@ -30,7 +30,7 @@ export class FirebaseCrud extends LitElement {
     document.addEventListener('firebase-signout', this._firebaseLogout.bind(this));
   }
 
-  firstUpdated() {
+  _wcReady() {
     const componentCreatedEvent = new CustomEvent('wc-ready', {
       detail: {
         id: this.id,
@@ -62,6 +62,7 @@ export class FirebaseCrud extends LitElement {
       }
       this.storage = event.detail.firebaseStorage;
       this.consoleLog('_firebaseLogin', this.firebaseApp, this.db, this.userData, this.storage);
+      this._wcReady();
     }
   }
 
