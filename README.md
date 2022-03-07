@@ -25,6 +25,17 @@ npm i firebase-crud
 <firebase-crud reference-id="FirebaseLogginbutton-ID"></firebase-crud>
 ```
 
+## Methods
+
+- **listenData(path, callbackExists, [callbackNotExists])**: Listen to firebase data changes from path. When changes are made, callbackExists is called. When data is deleted, callbackNotExists is called.
+- **deleteData(path, [callbackTrue])**: Delete data from firebase path. When data is deleted, callbackTrue is called.
+- **insertData(jsonData, path, [callbackTrue])**: Insert jsonData to firebase path. When data is inserted, callbackTrue is called.
+- **updateData(jsonData, path, [callbackTrue])**: Update jsonData to firebase path. When data is updated, callbackTrue is called.
+- **getData(path, callbackTrue)**: Get data from firebase path. When data is retrieved, callbackTrue is called.
+- \*\*getNewId(path): Get a new id from firebase path.
+- **uploadFSFile(blob, pathAndFileName)**: Upload blob to firebase pathAndFileName.
+- **downloadFSFile(path)**: Return a promise to retrieve the url file from firebase path.
+
 ## Linting and formatting
 
 To scan the project for linting and formatting errors, run
