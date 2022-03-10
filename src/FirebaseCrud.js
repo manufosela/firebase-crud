@@ -1,5 +1,5 @@
 import { html, LitElement } from 'lit';
-import { getDatabase, ref, onValue, set, get, child, push, update, connectDatabaseEmulator } from "firebase/database";
+import { getDatabase, ref, onValue, set, get, child, push, update, connectDatabaseEmulator, query, orderByChild, equalTo } from "firebase/database";
 import { ref as sRef, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 export class FirebaseCrud extends LitElement {
@@ -150,6 +150,24 @@ export class FirebaseCrud extends LitElement {
           callbackTrue(snapshot.val());
           resolve(snapshot.val());
         } else {
+          resolve(null);
+        }
+      }).catch((error) => {
+        this.consoleError(error);
+        reject(error);
+      });
+    });
+  }
+
+  getDataFilterBy(path = '/', key, value, callbackTrue = () =>{}) {
+    const dbRef = ref(this.db, path);
+    return new Promise((resolve, reject) => {
+      get(query(dbRef, orderByChild(key), equalTo(value))).then((snapshot) => {
+        if (snapshot.exists()) {
+          callbackTrue(snapshot.val());
+          resolve(snapshot.val());
+        } else {
+          console.warn(`No hay datos para ${key} = ${value}`);
           resolve(null);
         }
       }).catch((error) => {

@@ -39,6 +39,9 @@
 
               <button id="getdataAllBtn">Get All Data</button>
               <button id="getFLdataBtn">Get First Level Data</button>
+              <button id="getFilterDataBtn">
+                Get Data Filter by Format DVD
+              </button>
               <button disabled>Insert Data</button>
               <button disabled>Update Data</button>
               <button disabled>Listen Data</button>
@@ -93,6 +96,16 @@
           event.stopPropagation();
           event.preventDefault();
           document.querySelector('firebase-crud').getData('/', showFLData);
+          return false;
+        });
+      document
+        .getElementById('getFilterDataBtn')
+        .addEventListener('click', event => {
+          event.stopPropagation();
+          event.preventDefault();
+          document
+            .querySelector('firebase-crud')
+            .getDataFilterBy('/peliculas', 'formato', 'dvd', showData);
           return false;
         });
 
