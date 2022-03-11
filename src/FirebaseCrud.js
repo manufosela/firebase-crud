@@ -106,7 +106,7 @@ export class FirebaseCrud extends LitElement {
     const dbRef = ref(this.db);
     return new Promise((resolve, reject) => {
       set(child(dbRef, path), null).then(() => {
-        callbackTrue();
+        callbackTrue(path);
         resolve(`${path} borrado de la base de datos`);
       }).catch((error) => {
         this.consoleError('Error deleting data:', error);
@@ -119,7 +119,7 @@ export class FirebaseCrud extends LitElement {
     this.consoleLog('insertData', data, path);
     return new Promise((resolve, reject) => {
       set(ref(this.db, path), data).then(() => {
-        callbackTrue();
+        callbackTrue(data);
         resolve(true);
       })
       .catch((error) => {
@@ -132,7 +132,7 @@ export class FirebaseCrud extends LitElement {
   updateData(data = {default: 'default data'}, path = '/', callbackTrue = () =>{}) {
     return new Promise((resolve, reject) => {
       update(ref(this.db, path), data).then(() => {
-        callbackTrue();
+        callbackTrue(data);
         resolve(`Actualización correcta en la base de datos`);
       })
       .catch((error) => {
