@@ -177,6 +177,24 @@ export class FirebaseCrud extends LitElement {
     });
   }
 
+  searchValue(path = '/', value, callbackTrue = () =>{}) {
+    const dbRef = ref(this.db, path);
+    return new Promise((resolve, reject) => {
+      get(query(dbRef, orderByKey(), equalTo(value))).then((snapshot) => {
+        if (snapshot.exists()) {
+          callbackTrue(snapshot.val());
+          resolve(snapshot.val());
+        } else {
+          console.warn(`No hay datos para ${key} = ${value}`);
+          resolve(null);
+        }
+      }).catch((error) => {
+        this.consoleError(error);
+        reject(error);
+      });
+    });
+  }
+
   getNewId(path = '/') {
     const newResultKey = push(child(ref(this.db), path)).key;
     return newResultKey;

@@ -35,6 +35,8 @@ npm i firebase-crud
 - \*\*getNewId(path): Get a new id from firebase path.
 - **uploadFSFile(blob, pathAndFileName)**: Upload blob to firebase pathAndFileName.
 - **downloadFSFile(path)**: Return a promise to retrieve the url file from firebase path.
+- **getDataFilterBy(path, key, value, [callbackTrue] )**: Search/Filter a value (string or array) into path with key in a document collection
+- **searchValue(path, value, [callbackTrue])**: Search/Filter a value (string or array) into path from document array.
 
 ## Linting and formatting
 
