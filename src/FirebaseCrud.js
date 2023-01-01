@@ -1,5 +1,5 @@
 import { html, LitElement } from 'lit';
-import { getDatabase, ref, onValue, set, get, child, push, update, connectDatabaseEmulator, query, orderByChild, equalTo } from "firebase/database";
+import { getDatabase, ref, onValue, set, get, child, push, update, connectDatabaseEmulator, query, orderByChild, orderByKey, equalTo } from "firebase/database";
 import { ref as sRef, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 export class FirebaseCrud extends LitElement {
