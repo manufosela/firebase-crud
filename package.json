@@ -26,8 +26,8 @@
     "storybook:build": "npm run analyze -- --exclude dist && build-storybook"
   },
   "dependencies": {
-    "firebase": "^9.6.8",
-    "lit": "^2.2.0"
+    "firebase": "^10.5.0",
+    "lit": "^3.0.0"
   },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.4.17",
