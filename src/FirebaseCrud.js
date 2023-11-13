@@ -29,8 +29,8 @@ export class FirebaseCrud extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    document.addEventListener('firebase-login', this._firebaseLogin.bind(this));
-    document.addEventListener('firebase-logout', this._firebaseLogout.bind(this));
+    document.addEventListener('firebase-signin', this._firebaseLogin.bind(this));
+    document.addEventListener('firebase-signout', this._firebaseLogout.bind(this));
   }
 
   _wcReady() {
