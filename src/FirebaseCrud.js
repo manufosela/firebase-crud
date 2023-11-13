@@ -8,7 +8,7 @@ export class FirebaseCrud extends LitElement {
       id: { type: String },
       referenceId: { type: String, attribute: 'reference-id' },
       emulation: { type: Boolean, attribute: 'emulation', reflect: true },
-      showLog: { type: Boolean, attribute: 'show-log', reflect: true,  },
+      showLog: { type: Boolean, attribute: 'show-log', reflect: true, },
     };
   }
 
@@ -51,11 +51,11 @@ export class FirebaseCrud extends LitElement {
     }
   }
 
-  _firebaseLogin(event) {  
+  async _firebaseLogin(event) {
     const refId = event.detail.id;
     if (refId === this.referenceId) {
       this.firebaseApp = event.detail.firebaseApp;
-      this.db = getDatabase(this.firebaseApp);
+      this.db = await getDatabase(this.firebaseApp);
       this.userData = event.detail.user;
       if (this.emulation) {
         connectDatabaseEmulator(this.db);
@@ -85,7 +85,7 @@ export class FirebaseCrud extends LitElement {
     }
   }
 
-  listenData(path = '/', callbackExists, callbackNotExists = () => {}) {
+  listenData(path = '/', callbackExists, callbackNotExists = () => { }) {
     this.consoleLog('listenData', path);
     if (callbackExists) {
       const refDb = ref(this.db, path);
@@ -101,7 +101,7 @@ export class FirebaseCrud extends LitElement {
     }
   }
 
-  deleteData(path = '/', callbackTrue = () =>{}) {
+  deleteData(path = '/', callbackTrue = () => { }) {
     this.consoleLog('deleteData', path);
     const dbRef = ref(this.db);
     return new Promise((resolve, reject) => {
@@ -115,34 +115,34 @@ export class FirebaseCrud extends LitElement {
     });
   }
 
-  insertData(data = {default: 'default data'}, path = '/', callbackTrue = () =>{}) {
+  insertData(data = { default: 'default data' }, path = '/', callbackTrue = () => { }) {
     this.consoleLog('insertData', data, path);
     return new Promise((resolve, reject) => {
       set(ref(this.db, path), data).then(() => {
         callbackTrue(data);
         resolve(true);
       })
-      .catch((error) => {
-        this.consoleError(error);
-        reject(error);
-      });
+        .catch((error) => {
+          this.consoleError(error);
+          reject(error);
+        });
     });
   }
 
-  updateData(data = {default: 'default data'}, path = '/', callbackTrue = () =>{}) {
+  updateData(data = { default: 'default data' }, path = '/', callbackTrue = () => { }) {
     return new Promise((resolve, reject) => {
       update(ref(this.db, path), data).then(() => {
         callbackTrue(data);
         resolve(`Actualización correcta en la base de datos`);
       })
-      .catch((error) => {
-        this.consoleError(error);
-        reject(error);
-      });
+        .catch((error) => {
+          this.consoleError(error);
+          reject(error);
+        });
     });
   }
 
-  getData(path = '/', callbackTrue = () =>{}) {
+  getData(path = '/', callbackTrue = () => { }) {
     const dbRef = ref(this.db);
     return new Promise((resolve, reject) => {
       get(child(dbRef, path)).then((snapshot) => {
@@ -159,7 +159,7 @@ export class FirebaseCrud extends LitElement {
     });
   }
 
-  getDataFilterBy(path = '/', key, value, callbackTrue = () =>{}) {
+  getDataFilterBy(path = '/', key, value, callbackTrue = () => { }) {
     const dbRef = ref(this.db, path);
     return new Promise((resolve, reject) => {
       get(query(dbRef, orderByChild(key), equalTo(value))).then((snapshot) => {
@@ -177,7 +177,7 @@ export class FirebaseCrud extends LitElement {
     });
   }
 
-  searchValue(path = '/', value, callbackTrue = () =>{}) {
+  searchValue(path = '/', value, callbackTrue = () => { }) {
     const dbRef = ref(this.db, path);
     return new Promise((resolve, reject) => {
       get(query(dbRef, orderByKey(), equalTo(value))).then((snapshot) => {
@@ -207,7 +207,7 @@ export class FirebaseCrud extends LitElement {
       const uploadTask = uploadBytesResumable(storageRef, blob);
       uploadTask.on('state_changed', (snapshot) => {
         const process = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        this.consoleLog(`Upload is ${  process  }% done`);
+        this.consoleLog(`Upload is ${process}% done`);
         document.dispatchEvent(new CustomEvent('firebase-upload-progress', {
           detail: {
             id: this.referenceId,
