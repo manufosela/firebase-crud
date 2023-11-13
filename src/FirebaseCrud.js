@@ -53,7 +53,7 @@ export class FirebaseCrud extends LitElement {
 
   async _firebaseLogin(event) {
     const refId = event.detail.id;
-    if (refId === this.referenceId) {
+    if (refId === this.referenceId && !this.firebaseApp && !this.db && !this.userData && !this.storage) {
       const firebaseApp = event.detail.firebaseApp;
       const db = await getDatabase(firebaseApp);
       const userData = event.detail.user;
