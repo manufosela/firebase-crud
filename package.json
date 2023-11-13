@@ -1,7 +1,7 @@
 {
   "name": "@firebase-utils/firebase-crud",
   "description": "Webcomponent firebase-crud following open-wc recommendations",
-  "version": "1.5.8",
+  "version": "1.5.9",
   "main": "index.js",
   "module": "firebase-crud.js",
   "type": "module",
