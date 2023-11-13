@@ -54,15 +54,22 @@ export class FirebaseCrud extends LitElement {
   async _firebaseLogin(event) {
     const refId = event.detail.id;
     if (refId === this.referenceId) {
-      this.firebaseApp = event.detail.firebaseApp;
-      this.db = await getDatabase(this.firebaseApp);
-      this.userData = event.detail.user;
-      if (this.emulation) {
-        connectDatabaseEmulator(this.db);
+      const firebaseApp = event.detail.firebaseApp;
+      const db = await getDatabase(this.firebaseApp);
+      const userData = event.detail.user;
+      const storage = event.detail.firebaseStorage;
+
+      if (firebaseApp && db && userData && storage) {
+        this.firebaseApp = firebaseApp;
+        this.db = db;
+        this.userData = userData;
+        if (this.emulation) {
+          connectDatabaseEmulator(this.db);
+        }
+        this.storage = storage;
+        this.consoleLog('_firebaseLogin', this.firebaseApp, this.db, this.userData, this.storage);
+        this._wcReady();
       }
-      this.storage = event.detail.firebaseStorage;
-      this.consoleLog('_firebaseLogin', this.firebaseApp, this.db, this.userData, this.storage);
-      this._wcReady();
     }
   }
 
