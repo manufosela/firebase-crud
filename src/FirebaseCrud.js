@@ -153,6 +153,9 @@ export class FirebaseCrud extends LitElement {
   }
 
   getData(path = '/', callbackTrue = () => { }) {
+    if (this.db === null) {
+      return;
+    }
     const dbRef = ref(this.db);
     return new Promise((resolve, reject) => {
       get(child(dbRef, path)).then((snapshot) => {
